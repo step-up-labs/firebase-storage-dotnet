@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>FirebaseStorage.net</id>
+		<version>1.0.0-alpha1</version>
+		<title>FirebaseStorage.net</title>
+		<authors>Step Up Labs, Inc.</authors>
+		<owners>Step Up Labs, Inc.</owners>
+    <iconUrl>https://github.com/step-up-labs/firebase-storage-dotnet/raw/master/art/FirebaseLogo.128x128.png</iconUrl>
+    <licenseUrl>https://github.com/step-up-labs/firebase-storage-dotnet/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/step-up-labs/firebase-storage-dotnet</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>
+      
+    </description>
+		<copyright>Step Up Labs, Inc. 2017</copyright>
+		<tags>Firebase Storage Google</tags>
+	</metadata>
+</package>
