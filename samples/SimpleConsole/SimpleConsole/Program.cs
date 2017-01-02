@@ -43,7 +43,7 @@
                 .Child("receipts")
                 .Child("test")
                 .Child("someFile.png")
-                .Put(stream, cancellation.Token);
+                .PutAsync(stream, cancellation.Token);
 
             task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
 

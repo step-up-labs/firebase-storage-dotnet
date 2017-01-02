@@ -29,7 +29,7 @@
         /// <param name="stream"> Stream to upload. </param>
         /// <param name="cancellationToken"> Cancellation token which can be used to cancel the operation. </param>
         /// <returns> <see cref="FirebaseStorageTask"/> which can be used to track the progress of the upload. </returns>
-        public FirebaseStorageTask Put(Stream stream, CancellationToken cancellationToken)
+        public FirebaseStorageTask PutAsync(Stream stream, CancellationToken cancellationToken)
         {
             return new FirebaseStorageTask(this.storage.Options, this.GetTargetUrl(), this.GetFullDownloadUrl(), stream, cancellationToken);
         }
@@ -39,9 +39,9 @@
         /// </summary>
         /// <param name="stream"> Stream to upload. </param>
         /// <returns> <see cref="FirebaseStorageTask"/> which can be used to track the progress of the upload. </returns>
-        public FirebaseStorageTask Put(Stream fileStream)
+        public FirebaseStorageTask PutAsync(Stream fileStream)
         {
-            return this.Put(fileStream, CancellationToken.None);
+            return this.PutAsync(fileStream, CancellationToken.None);
         }
 
         /// <summary>
