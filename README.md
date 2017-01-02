@@ -27,7 +27,7 @@ var task = new FirebaseStorage("your-bucket.appspot.com")
     .Child("data")
     .Child("random")
     .Child("file.png")
-    .Put(stream);
+    .PutAsync(stream);
 
 // Track progress of the upload
 task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
