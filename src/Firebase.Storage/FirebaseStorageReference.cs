@@ -50,13 +50,24 @@
         public async Task<string> GetDownloadUrlAsync()
         {
             var url = this.GetDownloadUrl();
+            var resultContent = "N/A";
 
-            using (var http = await this.storage.Options.CreateHttpClientAsync())
+            try
             {
-                var result = await http.GetStringAsync(url);
-                var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
-                
-                return this.GetFullDownloadUrl() + data["downloadTokens"];
+                using (var http = await this.storage.Options.CreateHttpClientAsync().ConfigureAwait(false))
+                {
+                    var result = await http.GetAsync(url);
+                    resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(resultContent);
+
+                    result.EnsureSuccessStatusCode();
+
+                    return this.GetFullDownloadUrl() + data["downloadTokens"];
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new FirebaseStorageException(url, resultContent, ex);
             }
         }
 
@@ -66,12 +77,22 @@
         public async Task DeleteAsync()
         {
             var url = this.GetDownloadUrl();
+            var resultContent = "N/A";
 
-            using (var http = await this.storage.Options.CreateHttpClientAsync())
+            try
             {
-                var result = await http.DeleteAsync(url);
+                using (var http = await this.storage.Options.CreateHttpClientAsync().ConfigureAwait(false))
+                {
+                    var result = await http.DeleteAsync(url).ConfigureAwait(false);
 
-                result.EnsureSuccessStatusCode();
+                    resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                    result.EnsureSuccessStatusCode();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new FirebaseStorageException(url, resultContent, ex);
             }
         }
 
