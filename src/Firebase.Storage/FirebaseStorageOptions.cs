@@ -13,5 +13,14 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets whether <see cref="TaskCanceledException"/> should be thrown when cancelling a running <see cref="FirebaseStorageTask"/>.
+        /// </summary>
+        public bool ThrowOnCancel
+        {
+            get;
+            set;
+        }
     }
 }

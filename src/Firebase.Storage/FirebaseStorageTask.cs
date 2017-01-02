@@ -10,6 +10,8 @@
 
     public class FirebaseStorageTask
     {
+        private const int ProgressReportDelayMiliseconds = 500;
+
         private readonly Task uploadTask;
         private readonly Stream stream;
 
@@ -67,7 +69,12 @@
                 }
             }
             catch (TaskCanceledException)
-            { }
+            {
+                if (options.ThrowOnCancel)
+                {
+                    throw;
+                }
+            }
             catch (Exception ex)
             {
                 throw new FirebaseStorageException(url, responseData, ex);
@@ -78,7 +85,7 @@
         {
             while (!this.uploadTask.IsCompleted)
             {
-                await Task.Delay(500);
+                await Task.Delay(ProgressReportDelayMiliseconds);
 
                 var percentage = (this.stream.Position / (double)this.stream.Length) * 100;
                 this.OnReportProgress((int)percentage);
