@@ -61,6 +61,21 @@
         }
 
         /// <summary>
+        /// Deletes a file at target location.
+        /// </summary>
+        public async Task DeleteAsync()
+        {
+            var url = this.GetDownloadUrl();
+
+            using (var http = await this.storage.Options.CreateHttpClientAsync())
+            {
+                var result = await http.DeleteAsync(url);
+
+                result.EnsureSuccessStatusCode();
+            }
+        }
+
+        /// <summary>
         /// Constructs firebase path to the file.
         /// </summary>
         /// <param name="name"> Name of the entity. This can be folder or a file name or full path.</param>
