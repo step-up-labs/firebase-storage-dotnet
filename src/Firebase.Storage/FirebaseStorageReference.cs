@@ -65,12 +65,10 @@
         /// </summary>
         /// <param name="name"> Name of the entity. This can be folder or a file name or full path.</param>
         /// <example>
-        ///     [<![CDATA[
         ///     storage
         ///         .Child("some")
         ///         .Child("path")
         ///         .Child("to/file.png");
-        ///     ]]>
         /// </example>
         /// <returns> <see cref="FirebaseStorageReference"/> for fluid syntax. </returns>
         public FirebaseStorageReference Child(string name)
