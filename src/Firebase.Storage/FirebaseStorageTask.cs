@@ -20,12 +20,12 @@
             this.TargetUrl = url;
             this.uploadTask = this.UploadFile(options, url, stream, cancellationToken);
             this.stream = stream;
-            this.Progress = new Progress<int>();
+            this.Progress = new Progress<FirebaseStorageProgress>();
 
             Task.Factory.StartNew(() => ReportProgressLoop());
         }
 
-        public Progress<int> Progress
+        public Progress<FirebaseStorageProgress> Progress
         {
             get;
             private set;
@@ -86,15 +86,14 @@
             while (!this.uploadTask.IsCompleted)
             {
                 await Task.Delay(ProgressReportDelayMiliseconds);
-
-                var percentage = (this.stream.Position / (double)this.stream.Length) * 100;
-                this.OnReportProgress((int)percentage);
+                
+                this.OnReportProgress(new FirebaseStorageProgress(this.stream.Position, this.stream.Length));
             }
         }
 
-        private void OnReportProgress(int percentageProgress)
+        private void OnReportProgress(FirebaseStorageProgress progress)
         {
-            (this.Progress as IProgress<int>).Report(percentageProgress);
+            (this.Progress as IProgress<FirebaseStorageProgress>).Report(progress);
         }
     }
 }

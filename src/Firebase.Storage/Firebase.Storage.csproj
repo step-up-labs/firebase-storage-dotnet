@@ -41,6 +41,7 @@
     <Compile Include="FirebaseStorage.cs" />
     <Compile Include="FirebaseStorageException.cs" />
     <Compile Include="FirebaseStorageOptions.cs" />
+    <Compile Include="FirebaseStorageProgress.cs" />
     <Compile Include="FirebaseStorageReference.cs" />
     <Compile Include="FirebaseStorageTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
