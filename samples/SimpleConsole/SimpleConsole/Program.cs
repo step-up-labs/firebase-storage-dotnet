@@ -45,7 +45,7 @@
                 .Child("someFile.png")
                 .Put(stream, cancellation.Token);
 
-            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e} %");
+            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
 
             // cancel the upload
             // cancellation.Cancel();
