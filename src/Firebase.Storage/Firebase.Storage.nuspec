@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/step-up-labs/firebase-storage-dotnet</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
-      
+      Easily upload files and other content to Firebase Storage. 
     </description>
 		<copyright>Step Up Labs, Inc. 2017</copyright>
 		<tags>Firebase Storage Google</tags>
