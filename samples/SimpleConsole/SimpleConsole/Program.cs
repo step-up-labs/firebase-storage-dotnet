@@ -5,6 +5,7 @@
     using System;
     using System.IO;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     internal class Program
@@ -29,18 +30,25 @@
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
             var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
 
+            // you can use CancellationTokenSource to cancel the upload midway
+            var cancellation = new CancellationTokenSource();
+
             var task = new FirebaseStorage(
                 Bucket,
                 new FirebaseStorageOptions
                 {
-                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken)
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true // when you cancel the upload, exception is thrown. By default no exception is thrown
                 })
                 .Child("receipts")
                 .Child("test")
                 .Child("someFile.png")
-                .Put(stream);
+                .Put(stream, cancellation.Token);
 
             task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e} %");
+
+            // cancel the upload
+            // cancellation.Cancel();
 
             try
             {
