@@ -31,7 +31,7 @@
         /// <returns> <see cref="FirebaseStorageTask"/> which can be used to track the progress of the upload. </returns>
         public FirebaseStorageTask Put(Stream stream, CancellationToken cancellationToken)
         {
-            return new FirebaseStorageTask(this.storage.Options, this.GetTargetUrl(), stream, cancellationToken);
+            return new FirebaseStorageTask(this.storage.Options, this.GetTargetUrl(), this.GetFullDownloadUrl(), stream, cancellationToken);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@
                 var result = await http.GetStringAsync(url);
                 var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
                 
-                return url + "?alt=media&token=" + data["downloadTokens"];
+                return this.GetFullDownloadUrl() + data["downloadTokens"];
             }
         }
 
@@ -87,6 +87,11 @@
         private string GetDownloadUrl()
         {
             return $"{FirebaseStorageEndpoint}{this.storage.StorageBucket}/o/{this.GetEscapedPath()}";
+        }
+
+        private string GetFullDownloadUrl()
+        {
+            return this.GetDownloadUrl() + "?alt=media&token=";
         }
 
         private string GetEscapedPath()

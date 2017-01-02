@@ -1,6 +1,8 @@
 ﻿namespace Firebase.Storage
 {
+    using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -12,13 +14,13 @@
     {
         private const int ProgressReportDelayMiliseconds = 500;
 
-        private readonly Task uploadTask;
+        private readonly Task<string> uploadTask;
         private readonly Stream stream;
 
-        public FirebaseStorageTask(FirebaseStorageOptions options, string url, Stream stream, CancellationToken cancellationToken)
+        public FirebaseStorageTask(FirebaseStorageOptions options, string url, string downloadUrl, Stream stream, CancellationToken cancellationToken)
         {
             this.TargetUrl = url;
-            this.uploadTask = this.UploadFile(options, url, stream, cancellationToken);
+            this.uploadTask = this.UploadFile(options, url, downloadUrl, stream, cancellationToken);
             this.stream = stream;
             this.Progress = new Progress<FirebaseStorageProgress>();
 
@@ -38,12 +40,12 @@
             private set;
         }
 
-        public TaskAwaiter GetAwaiter()
+        public TaskAwaiter<string> GetAwaiter()
         {
             return this.uploadTask.GetAwaiter();
         }
 
-        private async Task UploadFile(FirebaseStorageOptions options, string url, Stream stream, CancellationToken cancellationToken)
+        private async Task<string> UploadFile(FirebaseStorageOptions options, string url, string downloadUrl, Stream stream, CancellationToken cancellationToken)
         {
             var responseData = "N/A";
 
@@ -60,6 +62,9 @@
                     responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     response.EnsureSuccessStatusCode();
+                    var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseData);
+
+                    return downloadUrl + data["downloadTokens"];
                 }
             }
             catch (TaskCanceledException)
@@ -68,6 +73,8 @@
                 {
                     throw;
                 }
+
+                return string.Empty;
             }
             catch (Exception ex)
             {

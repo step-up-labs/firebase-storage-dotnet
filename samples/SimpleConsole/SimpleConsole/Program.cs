@@ -53,7 +53,7 @@
             try
             {
                 // error during upload will be thrown when you await the task
-                await task;
+                Console.WriteLine("Download link:\n" + await task);
             }
             catch (Exception ex)
             {
