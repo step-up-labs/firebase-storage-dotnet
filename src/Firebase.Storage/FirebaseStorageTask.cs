@@ -49,14 +49,8 @@
 
             try
             {
-                using (var client = new HttpClient())
+                using (var client = await options.CreateHttpClientAsync())
                 {
-                    if (options.AuthTokenAsyncFactory != null)
-                    {
-                        var auth = await options.AuthTokenAsyncFactory().ConfigureAwait(false);
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Firebase", auth);
-                    }
-
                     var request = new HttpRequestMessage(HttpMethod.Post, url)
                     {
                         Content = new StreamContent(stream)

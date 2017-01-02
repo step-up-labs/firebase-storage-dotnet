@@ -1,8 +1,12 @@
 ﻿namespace Firebase.Storage
 {
+    using Newtonsoft.Json;
+
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
+    using System.Threading.Tasks;
 
     public class FirebaseStorageReference
     {
@@ -41,6 +45,22 @@
         }
 
         /// <summary>
+        /// Gets the url to download given file.
+        /// </summary>
+        public async Task<string> GetDownloadUrlAsync()
+        {
+            var url = this.GetDownloadUrl();
+
+            using (var http = await this.storage.Options.CreateHttpClientAsync())
+            {
+                var result = await http.GetStringAsync(url);
+                var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
+                
+                return url + "?alt=media&token=" + data["downloadTokens"];
+            }
+        }
+
+        /// <summary>
         /// Constructs firebase path to the file.
         /// </summary>
         /// <param name="name"> Name of the entity. This can be folder or a file name or full path.</param>
@@ -61,7 +81,17 @@
 
         private string GetTargetUrl()
         {
-            return $"{FirebaseStorageEndpoint}{this.storage.StorageBucket}/o?name={string.Join("/", this.children)}";
+            return $"{FirebaseStorageEndpoint}{this.storage.StorageBucket}/o?name={this.GetEscapedPath()}";
+        }
+
+        private string GetDownloadUrl()
+        {
+            return $"{FirebaseStorageEndpoint}{this.storage.StorageBucket}/o/{this.GetEscapedPath()}";
+        }
+
+        private string GetEscapedPath()
+        {
+            return Uri.EscapeDataString(string.Join("/", this.children));
         }
     }
 }
