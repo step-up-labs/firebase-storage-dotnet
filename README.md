@@ -1,7 +1,9 @@
 # FirebaseStorage.net
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/o8hpwxrgfyhu527b?svg=true)](https://ci.appveyor.com/project/bezysoftware/firebase-storage-dotnet)
 
-Easily upload files and other content to Firebase Storage. 
+Easily upload files and other content to Firebase Storage. More info in a [blog post](https://medium.com/step-up-labs/firebase-storage-c-library-d1656cc8b3c3)
+
+For Authenticating with Firebase checkout the [Firebase Authentication library](https://github.com/step-up-labs/firebase-authentication-dotnet) and related [blog post](https://medium.com/step-up-labs/firebase-authentication-c-library-8e5e1c30acc2)
 
 ## Installation
 ```csharp
