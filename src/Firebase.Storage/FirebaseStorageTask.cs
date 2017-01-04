@@ -87,8 +87,16 @@
             while (!this.uploadTask.IsCompleted)
             {
                 await Task.Delay(ProgressReportDelayMiliseconds);
-                
-                this.OnReportProgress(new FirebaseStorageProgress(this.stream.Position, this.stream.Length));
+
+                try
+                { 
+                    this.OnReportProgress(new FirebaseStorageProgress(this.stream.Position, this.stream.Length));
+                }
+                catch (ObjectDisposedException)
+                {
+                    // there is no 100 % way to prevent ObjectDisposedException, there are bound to be concurrency issues.
+                    return;
+                } 
             }
         }
 
