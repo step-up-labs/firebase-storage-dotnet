@@ -6,7 +6,7 @@
         {
             this.Position = position;
             this.Length = length;
-            this.Percentage = (int)(position / (double)length) * 100;
+            this.Percentage = (int)((position / (double)length) * 100);
         }
 
         public long Length
