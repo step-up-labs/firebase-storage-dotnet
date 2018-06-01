@@ -62,7 +62,7 @@
                     responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     response.EnsureSuccessStatusCode();
-                    var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseData);
+                    var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseData);
 
                     return downloadUrl + data["downloadTokens"];
                 }

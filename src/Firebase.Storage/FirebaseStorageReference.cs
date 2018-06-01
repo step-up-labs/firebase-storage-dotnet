@@ -58,7 +58,7 @@
                 {
                     var result = await http.GetAsync(url);
                     resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(resultContent);
+                    var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultContent);
 
                     result.EnsureSuccessStatusCode();
 
