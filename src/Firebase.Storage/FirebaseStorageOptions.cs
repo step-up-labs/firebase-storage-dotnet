@@ -22,5 +22,14 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Timeout of the <see cref="HttpClient"/>. Default is 100s.
+        /// </summary>
+        public TimeSpan HttpClientTimeout
+        {
+            get;
+            set;
+        }
     }
 }
