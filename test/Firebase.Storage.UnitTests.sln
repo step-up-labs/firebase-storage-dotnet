@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Firebase.Storage", "..\src\Firebase.Storage\Firebase.Storage.csproj", "{626465CB-8713-4E30-9834-D273A3A0D1B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F3A8B0F0-FAE4-4F9F-BE3C-E0BCB9570145}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5876DFA6-9BB7-46F8-A8C0-A33A6DB7202A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Firebase.Storage.UnitTests", "Firebase.Storage.UnitTests\Firebase.Storage.UnitTests.csproj", "{C67454BD-7262-4EA0-8147-75F1C5701E42}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{626465CB-8713-4E30-9834-D273A3A0D1B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{626465CB-8713-4E30-9834-D273A3A0D1B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{626465CB-8713-4E30-9834-D273A3A0D1B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{626465CB-8713-4E30-9834-D273A3A0D1B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C67454BD-7262-4EA0-8147-75F1C5701E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67454BD-7262-4EA0-8147-75F1C5701E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67454BD-7262-4EA0-8147-75F1C5701E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67454BD-7262-4EA0-8147-75F1C5701E42}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{626465CB-8713-4E30-9834-D273A3A0D1B1} = {F3A8B0F0-FAE4-4F9F-BE3C-E0BCB9570145}
+		{C67454BD-7262-4EA0-8147-75F1C5701E42} = {5876DFA6-9BB7-46F8-A8C0-A33A6DB7202A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A78FBE32-9FF6-46B3-B797-BD566377BD72}
+	EndGlobalSection
+EndGlobal
