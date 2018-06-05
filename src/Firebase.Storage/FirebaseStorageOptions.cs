@@ -1,6 +1,7 @@
 ﻿namespace Firebase.Storage
 {
     using System;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     public class FirebaseStorageOptions
