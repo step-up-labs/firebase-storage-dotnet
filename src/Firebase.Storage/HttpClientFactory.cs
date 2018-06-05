@@ -15,7 +15,7 @@
         {
             var client = new HttpClient();
 
-            if (options.HttpClientTimeout != null)
+            if (options.HttpClientTimeout != default(TimeSpan))
             {
                 client.Timeout = options.HttpClientTimeout;
             }
