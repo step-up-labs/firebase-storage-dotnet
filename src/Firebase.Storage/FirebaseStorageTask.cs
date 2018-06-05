@@ -17,14 +17,14 @@
         private readonly Task<string> uploadTask;
         private readonly Stream stream;
 
-        public FirebaseStorageTask(FirebaseStorageOptions options, string url, string downloadUrl, Stream stream, CancellationToken cancellationToken)
+        public FirebaseStorageTask(FirebaseStorageOptions options, string url, string downloadUrl, Stream stream, CancellationToken cancellationToken, string mimeType = null)
         {
             this.TargetUrl = url;
-            this.uploadTask = this.UploadFile(options, url, downloadUrl, stream, cancellationToken);
+            this.uploadTask = this.UploadFile(options, url, downloadUrl, stream, cancellationToken, mimeType);
             this.stream = stream;
             this.Progress = new Progress<FirebaseStorageProgress>();
 
-            Task.Factory.StartNew(() => ReportProgressLoop());
+            Task.Factory.StartNew(this.ReportProgressLoop);
         }
 
         public Progress<FirebaseStorageProgress> Progress
@@ -45,7 +45,7 @@
             return this.uploadTask.GetAwaiter();
         }
 
-        private async Task<string> UploadFile(FirebaseStorageOptions options, string url, string downloadUrl, Stream stream, CancellationToken cancellationToken)
+        private async Task<string> UploadFile(FirebaseStorageOptions options, string url, string downloadUrl, Stream stream, CancellationToken cancellationToken, string mimeType = null)
         {
             var responseData = "N/A";
 
@@ -57,6 +57,11 @@
                     {
                         Content = new StreamContent(stream)
                     };
+
+                    if (!string.IsNullOrEmpty(mimeType))
+                    {
+                        request.Content.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
+                    }
 
                     var response = await client.SendAsync(request, cancellationToken).ConfigureAwait(false);
                     responseData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
