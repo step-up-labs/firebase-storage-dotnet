@@ -28,10 +28,11 @@
         /// </summary>
         /// <param name="stream"> Stream to upload. </param>
         /// <param name="cancellationToken"> Cancellation token which can be used to cancel the operation. </param>
+        /// <param name="mimeType"> Optional type of data being uploaded, will be used to set HTTP Content-Type header. </param>
         /// <returns> <see cref="FirebaseStorageTask"/> which can be used to track the progress of the upload. </returns>
-        public FirebaseStorageTask PutAsync(Stream stream, CancellationToken cancellationToken)
+        public FirebaseStorageTask PutAsync(Stream stream, CancellationToken cancellationToken, string mimeType = null)
         {
-            return new FirebaseStorageTask(this.storage.Options, this.GetTargetUrl(), this.GetFullDownloadUrl(), stream, cancellationToken);
+            return new FirebaseStorageTask(this.storage.Options, this.GetTargetUrl(), this.GetFullDownloadUrl(), stream, cancellationToken, mimeType);
         }
 
         /// <summary>
