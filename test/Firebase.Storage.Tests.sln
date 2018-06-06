@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F3A8B0F0-FAE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5876DFA6-9BB7-46F8-A8C0-A33A6DB7202A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Firebase.Storage.UnitTests", "Firebase.Storage.UnitTests\Firebase.Storage.UnitTests.csproj", "{C67454BD-7262-4EA0-8147-75F1C5701E42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Firebase.Storage.IntegrationTests", "Firebase.Storage.IntegrationTests\Firebase.Storage.IntegrationTests.csproj", "{C67454BD-7262-4EA0-8147-75F1C5701E42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
