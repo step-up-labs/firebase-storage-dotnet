@@ -28,6 +28,9 @@ namespace Firebase.Storage
         [JsonProperty("size")]
         public long Size { get; set; }
 
+        [JsonProperty("contentType")]
+        public string ContentType { get; set; }
+
         [JsonProperty("timeCreated")]
         public DateTime TimeCreated { get; set; }
 
