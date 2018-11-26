@@ -46,30 +46,31 @@
         }
 
         /// <summary>
+        /// Gets the meta data for given file.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<FirebaseMetaData> GetMetaDataAsync()
+        {
+            var data = await PerformFetch<FirebaseMetaData>();
+
+            return data;
+        }
+
+        /// <summary>
         /// Gets the url to download given file.
         /// </summary>
         public async Task<string> GetDownloadUrlAsync()
         {
-            var url = this.GetDownloadUrl();
-            var resultContent = "N/A";
+            var data = await PerformFetch<Dictionary<string, object>>();
 
-            try
+            object downloadTokens;
+
+            if (!data.TryGetValue("downloadTokens", out downloadTokens))
             {
-                using (var http = await this.storage.Options.CreateHttpClientAsync().ConfigureAwait(false))
-                {
-                    var result = await http.GetAsync(url);
-                    resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultContent);
-
-                    result.EnsureSuccessStatusCode();
-
-                    return this.GetFullDownloadUrl() + data["downloadTokens"];
-                }
+                throw new ArgumentOutOfRangeException($"Could not extract 'downloadTokens' property from response. Response: {JsonConvert.SerializeObject(data)}");
             }
-            catch (Exception ex)
-            {
-                throw new FirebaseStorageException(url, resultContent, ex);
-            }
+
+            return this.GetFullDownloadUrl() + downloadTokens;
         }
 
         /// <summary>
@@ -112,6 +113,30 @@
         {
             this.children.Add(name);
             return this;
+        }
+
+        private async Task<T> PerformFetch<T>()
+        {
+            var url = this.GetDownloadUrl();
+            var resultContent = "N/A";
+
+            try
+            {
+                using (var http = await this.storage.Options.CreateHttpClientAsync().ConfigureAwait(false))
+                {
+                    var result = await http.GetAsync(url);
+                    resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var data = JsonConvert.DeserializeObject<T>(resultContent);
+
+                    result.EnsureSuccessStatusCode();
+
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new FirebaseStorageException(url, resultContent, ex);
+            }
         }
 
         private string GetTargetUrl()
