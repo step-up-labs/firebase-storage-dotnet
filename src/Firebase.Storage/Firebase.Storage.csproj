@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
     <PackageId>FirebaseStorage.net</PackageId>
-    <PackageVersion>1.0.2</PackageVersion>
+    <PackageVersion>1.0.3</PackageVersion>
     <Authors>Step Up Labs, Inc.</Authors>
     <Description>Easily upload files and other content to Firebase Storage. </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
