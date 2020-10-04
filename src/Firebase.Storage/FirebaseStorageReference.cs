@@ -1,5 +1,6 @@
 ﻿namespace Firebase.Storage
 {
+    using Firebase.Storage.Bucket;
     using Newtonsoft.Json;
 
     using System;
@@ -10,7 +11,7 @@
 
     public class FirebaseStorageReference
     {
-        private const string FirebaseStorageEndpoint = "https://firebasestorage.googleapis.com/v0/b/";
+        internal const string FirebaseStorageEndpoint = "https://firebasestorage.googleapis.com/v0/b/";
 
         private readonly FirebaseStorage storage;
         private readonly List<string> children;
@@ -99,6 +100,24 @@
         }
 
         /// <summary>
+        /// List all files descended from this reference.
+        /// </summary>
+        /// <param name="maxResults">Maximum results per page</param>
+        /// <param name="pageToken">Next page token</param>
+        /// <returns></returns>
+        public async Task<StorageBucketList> ListFiles(int maxResults = 1000, string pageToken = null)
+            => await storage.ListFiles(this, maxResults, pageToken);
+
+        /// <summary>
+        /// List all prefixes (folders) immediately descended from this reference.
+        /// </summary>
+        /// <param name="maxResults">Maximum results per page</param>
+        /// <param name="pageToken">Next page token</param>
+        /// <returns></returns>
+        public async Task<StorageBucketList> ListPrefixes(int maxResults = 1000, string pageToken = null)
+            => await storage.ListPrefixes(this, maxResults, pageToken);
+
+        /// <summary>
         /// Constructs firebase path to the file.
         /// </summary>
         /// <param name="name"> Name of the entity. This can be folder or a file name or full path.</param>
@@ -139,22 +158,22 @@
             }
         }
 
-        private string GetTargetUrl()
+        internal string GetTargetUrl()
         {
             return $"{FirebaseStorageEndpoint}{this.storage.StorageBucket}/o?name={this.GetEscapedPath()}";
         }
 
-        private string GetDownloadUrl()
+        internal string GetDownloadUrl()
         {
             return $"{FirebaseStorageEndpoint}{this.storage.StorageBucket}/o/{this.GetEscapedPath()}";
         }
 
-        private string GetFullDownloadUrl()
+        internal string GetFullDownloadUrl()
         {
             return this.GetDownloadUrl() + "?alt=media&token=";
         }
 
-        private string GetEscapedPath()
+        internal string GetEscapedPath()
         {
             return Uri.EscapeDataString(string.Join("/", this.children));
         }
