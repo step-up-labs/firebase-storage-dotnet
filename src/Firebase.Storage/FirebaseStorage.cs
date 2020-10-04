@@ -53,25 +53,32 @@ namespace Firebase.Storage
         /// <returns> <see cref="FirebaseStorageReference"/> for fluid syntax. </returns>
         public FirebaseStorageReference Child(string childRoot)
         {
-            return new FirebaseStorageReference(this, childRoot);
-        }
+            var p = childRoot;
 
+            if (!string.IsNullOrEmpty(p) && p.LastIndexOf("/") == p.Length - 1)
+            {
+                p = p.Substring(0, p.Length - 1);
+
+            }
+
+            return new FirebaseStorageReference(this, p);
+        }
 
         /// <summary>
         /// List all prefixes (folders) immediately descended from the root of the storage bucket.
         /// </summary>
-        /// <param name="maxResults">Maximum results per page</param>
+        /// <param name="maxResults">Maximum results per page (absolute maximum is 1000)</param>
         /// <param name="pageToken">Next page token</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="StorageBucketList" /> object with the requested results.</returns>
         public async Task<StorageBucketList> ListRootPrefixes(int maxResults = 1000, string pageToken = null) 
             => await ListPrefixes(null, maxResults, pageToken);
 
         /// <summary>
         /// List all files in the storage bucket.
         /// </summary>
-        /// <param name="maxResults">Maximum results per page</param>
+        /// <param name="maxResults">Maximum results per page (absolute maximum is 1000)</param>
         /// <param name="pageToken">Next page token</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="StorageBucketList" /> object with the requested results.</returns>
         public async Task<StorageBucketList> ListAllFiles(int maxResults = 1000, string pageToken = null)
             => await ListFiles(null, maxResults, pageToken);
 
@@ -97,25 +104,27 @@ namespace Firebase.Storage
                     item.storage = this;
                 }
             }
+            else
+            {
+                var s = (resp.StatusCode);
+
+            }
 
             return bucket;
         }
 
-        private string GetListUrl(FirebaseStorageReference child, bool forPrefix, int maxResults = 1000, string pageToken = null)
+        private string InternalGetListUrl(FirebaseStorageReference child, bool forPrefix, int maxResults = 1000, string pageToken = null)
         {
-            if (maxResults > 1000 || maxResults < 1) throw new ArgumentOutOfRangeException(nameof(maxResults));
+            if (maxResults > 1000 || maxResults < 1) throw new ArgumentOutOfRangeException(nameof(maxResults), "Must be a positive value between 1 and 1000 inclusive.");
 
-            string path;
             string reqUrl;
+            string sb = StorageBucket.Replace(".appspot.com", "");
+
+            reqUrl = $"{FirebaseStorageReference.FirebaseStorageEndpoint}{sb}/o?maxResults={maxResults}";
 
             if (child != null)
             {
-                path = child.GetEscapedPath();
-                reqUrl = $"{FirebaseStorageReference.FirebaseStorageEndpoint}{StorageBucket}/o?maxResults={maxResults}&prefix={path}%2f";
-            }
-            else
-            {
-                reqUrl = $"{FirebaseStorageReference.FirebaseStorageEndpoint}{StorageBucket}/o?maxResults={maxResults}";
+                reqUrl += $"&prefix={child.GetEscapedPath()}{Uri.EscapeDataString("/")}";
             }
 
             if (!string.IsNullOrEmpty(pageToken))
@@ -129,12 +138,12 @@ namespace Firebase.Storage
 
         internal async Task<StorageBucketList> ListFiles(FirebaseStorageReference child, int maxResults = 1000, string pageToken = null)
         {
-            return await InternalBucketRequest(GetListUrl(child, false, maxResults, pageToken));
+            return await InternalBucketRequest(InternalGetListUrl(child, false, maxResults, pageToken));
         }
 
         internal async Task<StorageBucketList> ListPrefixes(FirebaseStorageReference child, int maxResults = 1000, string pageToken = null)
         {
-            return await InternalBucketRequest(GetListUrl(child, true, maxResults, pageToken));
+            return await InternalBucketRequest(InternalGetListUrl(child, true, maxResults, pageToken));
         }
 
     }

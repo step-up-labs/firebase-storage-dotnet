@@ -102,18 +102,18 @@
         /// <summary>
         /// List all files descended from this reference.
         /// </summary>
-        /// <param name="maxResults">Maximum results per page</param>
+        /// <param name="maxResults">Maximum results per page (absolute maximum is 1000)</param>
         /// <param name="pageToken">Next page token</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="StorageBucketList" /> object with the requested results.</returns>
         public async Task<StorageBucketList> ListFiles(int maxResults = 1000, string pageToken = null)
             => await storage.ListFiles(this, maxResults, pageToken);
 
         /// <summary>
         /// List all prefixes (folders) immediately descended from this reference.
         /// </summary>
-        /// <param name="maxResults">Maximum results per page</param>
+        /// <param name="maxResults">Maximum results per page (absolute maximum is 1000)</param>
         /// <param name="pageToken">Next page token</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="StorageBucketList" /> object with the requested results.</returns>
         public async Task<StorageBucketList> ListPrefixes(int maxResults = 1000, string pageToken = null)
             => await storage.ListPrefixes(this, maxResults, pageToken);
 

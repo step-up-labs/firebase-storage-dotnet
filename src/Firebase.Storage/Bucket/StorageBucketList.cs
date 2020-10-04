@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Firebase.Storage.Bucket
@@ -14,11 +15,20 @@ namespace Firebase.Storage.Bucket
 
         }
 
+        [JsonProperty("items")]
+        internal List<StorageBucketListItem> items { get; set; }
+
+        [JsonIgnore()]
+        public IReadOnlyList<StorageBucketListItem> Items
+        {
+            get
+            {
+                return new ReadOnlyCollection<StorageBucketListItem>(items);
+            }
+        }
+
         [JsonProperty("prefixes")]
         public List<string> Prefixes { get; internal set; }
-
-        [JsonProperty("items")]
-        public List<StorageBucketListItem> Items { get; internal set; }
 
         [JsonProperty("nextPageToken")]
         public string NextPageToken { get; internal set; }
