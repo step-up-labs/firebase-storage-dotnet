@@ -84,14 +84,19 @@ namespace Firebase.Storage
 
         private async Task<StorageBucketList> InternalBucketRequest(string fullUrl)
         {
-            var cli = await Options.CreateHttpClientAsync();
-            var resp = await cli.GetAsync(fullUrl);
+            string json = null;
 
-            StorageBucketList bucket = null;
-
-            if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                var json = await resp.Content.ReadAsStringAsync();
+                var cli = await Options.CreateHttpClientAsync();
+                var resp = await cli.GetAsync(fullUrl);
+                var statusCode = resp.StatusCode;
+
+                resp.EnsureSuccessStatusCode();
+                StorageBucketList bucket = null;
+
+                json = await resp.Content.ReadAsStringAsync();
+
                 var cfg = new JsonSerializerSettings()
                 {
                     ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
@@ -103,14 +108,14 @@ namespace Firebase.Storage
                 {
                     item.storage = this;
                 }
+
+                return bucket;
+
             }
-            else
+            catch (Exception ex)
             {
-                var s = (resp.StatusCode);
-
+                throw new FirebaseStorageException(fullUrl, json, ex);
             }
-
-            return bucket;
         }
 
         private string InternalGetListUrl(FirebaseStorageReference child, bool forPrefix, int maxResults = 1000, string pageToken = null)
