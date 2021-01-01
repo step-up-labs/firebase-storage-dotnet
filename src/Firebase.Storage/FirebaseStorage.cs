@@ -124,20 +124,29 @@ namespace Firebase.Storage
 
             string reqUrl;
             string sb = StorageBucket.Replace(".appspot.com", "");
+            bool first = true;
 
-            reqUrl = $"{FirebaseStorageReference.FirebaseStorageEndpoint}{sb}/o?maxResults={maxResults}";
+            reqUrl = $"{FirebaseStorageReference.FirebaseStorageEndpoint}{sb}/o/?";
 
             if (child != null)
             {
-                reqUrl += $"&prefix={child.GetEscapedPath()}{Uri.EscapeDataString("/")}";
+                reqUrl += $"prefix={child.GetEscapedPath()}{Uri.EscapeDataString("/")}";
+                first = false;
             }
 
             if (!string.IsNullOrEmpty(pageToken))
             {
-                reqUrl += $"&pageToken={pageToken}";
+                if (!first) reqUrl += "&";
+                else first = false;
+
+                reqUrl += $"pageToken={pageToken}";
             }
 
+            if (!first) reqUrl += "&";
+            reqUrl += $"maxResults={maxResults}";
+
             if (forPrefix) reqUrl += "&delimiter=/";
+
             return reqUrl;
         }
 
