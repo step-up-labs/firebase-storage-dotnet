@@ -123,7 +123,7 @@ namespace Firebase.Storage
             if (maxResults > 1000 || maxResults < 1) throw new ArgumentOutOfRangeException(nameof(maxResults), "Must be a positive value between 1 and 1000 inclusive.");
 
             string reqUrl;
-            string sb = StorageBucket.Replace(".appspot.com", "");
+            string sb = StorageBucket; //.Replace(".appspot.com", "");
             bool first = true;
 
             reqUrl = $"{FirebaseStorageReference.FirebaseStorageEndpoint}{sb}/o/?";
