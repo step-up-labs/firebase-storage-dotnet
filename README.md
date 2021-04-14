@@ -20,8 +20,18 @@ Install-Package FirebaseStorage.net -pre
 // Get any Stream - it can be FileStream, MemoryStream or any other type of Stream
 var stream = File.Open(@"C:\Users\you\file.png", FileMode.Open);
 
+//authentication
+var auth = new FirebaseAuthProvider(new FirebaseConfig("api_key"));
+var a = await auth.SignInWithEmailAndPasswordAsync("email", "password");
+
 // Constructr FirebaseStorage, path to where you want to upload the file and Put it there
-var task = new FirebaseStorage("your-bucket.appspot.com")
+var task = new FirebaseStorage(
+    "your-bucket.appspot.com"
+     new FirebaseStorageOptions
+     {
+         AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+         ThrowOnCancel = true,
+     })
     .Child("data")
     .Child("random")
     .Child("file.png")
